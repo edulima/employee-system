@@ -1,6 +1,8 @@
 package database;
 
+import javax.security.auth.login.LoginException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 
@@ -16,6 +18,8 @@ public class DBStatements {
 
         try {
 
+           this.connection = connection;
+
            createTableUsers(connection);
            createTableEmployees(connection);
            createProjects(connection);
@@ -26,6 +30,21 @@ public class DBStatements {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loginAttempt(Connection conn, String username, String password)
+        throws SQLException, LoginException
+    {
+        stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?");
+        stmt.setString(1, username);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()){
+                System.out.println("You are logged in as: " + username);
+            } else {
+                throw new LoginException("Invalid login details, try again...");
+            }
     }
 
     private void createTableUsers(Connection conn) throws SQLException{
