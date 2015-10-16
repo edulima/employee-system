@@ -39,21 +39,12 @@ public class AppInterface {
         String password = sc.nextLine();
 
         tryLogin(connection, username, password);
-
-        System.out.print(username);
-
-
     }
 
     public void tryLogin(Connection con, String username, String password) {
-        try {
-           dbStatements.loginAttempt(con, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (LoginException e) {
-            e.printStackTrace();
+
+        if (!dbStatements.loginAttempt(con, username, password)) {
+            System.out.println("Unauthorized Access for user " + username);
         }
     }
-
-
 }

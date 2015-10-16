@@ -29,19 +29,22 @@ public class DBStatements {
         }
     }
 
-    public void loginAttempt(Connection conn, String username, String password)
-        throws SQLException, LoginException
-    {
-        stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?");
-        stmt.setString(1, username);
-        stmt.setString(2, password);
-        ResultSet rs = stmt.executeQuery();
+    public boolean loginAttempt(Connection conn, String username, String password) {
+        try
+        {
+            stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?");
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs  = stmt.executeQuery();
 
-            if (rs.next()){
-                System.out.println("You are logged in as: " + username);
-            } else {
-                throw new LoginException("Invalid login details, try again...");
+            if (rs.next()) {
+                return true;
             }
+
+        } catch (SQLException e) {
+            System.err.print("Problem connecting to db" + e.getMessage());
+        }
+        return false;
     }
 
     private void createTableUsers(Connection conn) throws SQLException{
