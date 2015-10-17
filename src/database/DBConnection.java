@@ -22,6 +22,7 @@ public class DBConnection {
 
     public Connection connect () {
 
+        //DataBase Credentials
         dbUsername = "root";
         dbPassword = "";
 
@@ -29,7 +30,6 @@ public class DBConnection {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-
             conn = DriverManager.getConnection(url);
 
             stmt = conn.createStatement();
@@ -44,5 +44,4 @@ public class DBConnection {
         }
         return conn;
     }
-
 }
