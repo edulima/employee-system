@@ -9,7 +9,7 @@ import java.sql.Connection;
 /**
  * Created by eduardol on 15/10/2015.
  */
-public class DBStatements {
+public class CreateDatabase {
 
     private Connection connection;
     private PreparedStatement stmt;
@@ -27,24 +27,6 @@ public class DBStatements {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean loginAttempt(Connection conn, String username, String password) {
-        try
-        {
-            stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?");
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs  = stmt.executeQuery();
-
-            if (rs.next()) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            System.err.print("Problem connecting to db" + e.getMessage());
-        }
-        return false;
     }
 
     private void createTableUsers(Connection conn) throws SQLException{
@@ -118,4 +100,5 @@ public class DBStatements {
                 "REFERENCES Employee (id)); ");
         stmt.executeUpdate();
     }
+
 }

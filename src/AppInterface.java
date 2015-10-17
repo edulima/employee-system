@@ -1,9 +1,7 @@
 import database.DBConnection;
-import database.DBStatements;
-
-import javax.security.auth.login.LoginException;
+import database.CreateDatabase;
+import login.Login;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -12,16 +10,19 @@ import java.util.Scanner;
 public class AppInterface {
 
     private Connection connection;
+    private DBConnection con;
     private Scanner sc;
-    private DBStatements dbStatements;
+    private CreateDatabase createDatabase;
+    private Login login;
 
     public AppInterface () {
 
-        DBConnection con = new DBConnection();
+        con = new DBConnection();
+        login = new Login();
         connection = con.connect();
 
-        dbStatements = new DBStatements();
-        dbStatements.createDatabase(connection);
+        createDatabase = new CreateDatabase();
+        createDatabase.createDatabase(connection);
 
         sc = new Scanner(System.in);
 
@@ -43,8 +44,10 @@ public class AppInterface {
 
     public void tryLogin(Connection con, String username, String password) {
 
-        if (!dbStatements.loginAttempt(con, username, password)) {
+        if (!login.loginAttempt(con, username, password)) {
             System.out.println("Unauthorized Access for user " + username);
+        } else {
+            System.out.println("Welcome admin:" + username);
         }
     }
 }
